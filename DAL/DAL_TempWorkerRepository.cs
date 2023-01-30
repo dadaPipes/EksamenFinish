@@ -1,10 +1,8 @@
-﻿using EksamenFinish.Models;
+﻿using EksamenFinish.Services;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using System.Windows;
 
 namespace EksamenFinish.DAL
 {
@@ -18,29 +16,25 @@ namespace EksamenFinish.DAL
             string connectionString = dbConnection.GetConnectionString();
             _connection = new SqlConnection(connectionString);
             _connection.Open();
-
         }
 
         #region CreateTempWorker
 
-        public void CreateTempWorker(M_TempWorker worker)
+        public void CreateTempWorker(DTO_TempWorker dto_tempWorker)
         {
             using (var command = _connection.CreateCommand())
             {
-                //_connection.Open();
-
                 command.CommandText = "INSERT INTO TempWorker (Id, FirstName, LastName, Address, City, ZipCode, PersonalNumber, IsActive) " +
                     "VALUES (@Id, @FirstName, @LastName, @Address, @City, @ZipCode, @PersonalNumber, @IsActive)";
                 command.Parameters.Add(new SqlParameter("@Id", Guid.NewGuid()));
-                command.Parameters.Add(new SqlParameter("@FirstName", worker.FirstName));
-                command.Parameters.Add(new SqlParameter("@LastName", worker.LastName));
-                command.Parameters.Add(new SqlParameter("@Address", worker.Address));
-                command.Parameters.Add(new SqlParameter("@City", worker.City));
-                command.Parameters.Add(new SqlParameter("@ZipCode", worker.ZipCode));
-                command.Parameters.Add(new SqlParameter("@PersonalNumber", worker.PersonalNumber));
-                command.Parameters.Add(new SqlParameter("@IsActive", worker.IsActive));
+                command.Parameters.Add(new SqlParameter("@FirstName", dto_tempWorker.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", dto_tempWorker.LastName));
+                command.Parameters.Add(new SqlParameter("@Address", dto_tempWorker.Address));
+                command.Parameters.Add(new SqlParameter("@City", dto_tempWorker.City));
+                command.Parameters.Add(new SqlParameter("@ZipCode", dto_tempWorker.ZipCode));
+                command.Parameters.Add(new SqlParameter("@PersonalNumber", dto_tempWorker.PersonalNumber));
+                command.Parameters.Add(new SqlParameter("@IsActive", dto_tempWorker.IsActive));
                 command.ExecuteNonQuery();
-                MessageBox.Show($"Success. {worker.FirstName} {worker.LastName} \n {worker.Address} {worker.City} \n {worker.ZipCode} {worker.PersonalNumber} \n {worker.IsActive} is added to the database");
             }
         }
 
@@ -48,57 +42,51 @@ namespace EksamenFinish.DAL
 
         #region SearchTempWorkers
 
-        /// <summary>
-        ///  It uses the properties of the passed in M_TempWorker object to build a query and then uses SqlCommand and SqlDataReader to execute the query and read the results.
-        ///  It then returns the list of matching M_TempWorker
-        /// </summary>
-
-        public List<M_TempWorker> SearchTempWorkers(M_TempWorker tempWorker)
+        public List<DTO_TempWorker> SearchTempWorkers(DTO_TempWorker dto_tempWorker)
         {
+            var dto_tempWorkers = new List<DTO_TempWorker>();
             using (DbCommand command = _connection.CreateCommand())
             {
-                //_connection.Open();
-
-                var workers = new List<M_TempWorker>();
+                
                 command.Connection = _connection;
 
                 // Start building the query
                 var query = "SELECT * FROM TempWorker WHERE 1=1";
 
-                if (!string.IsNullOrEmpty(tempWorker.FirstName))
+                if (!string.IsNullOrEmpty(dto_tempWorker.FirstName))
                 {
                     query += " AND FirstName = @FirstName";
-                    command.Parameters.Add(new SqlParameter("@FirstName", tempWorker.FirstName));
+                    command.Parameters.Add(new SqlParameter("@FirstName", dto_tempWorker.FirstName));
                 }
 
-                if (!string.IsNullOrEmpty(tempWorker.LastName))
+                if (!string.IsNullOrEmpty(dto_tempWorker.LastName))
                 {
                     query += " AND LastName = @LastName";
-                    command.Parameters.Add(new SqlParameter("@LastName", tempWorker.LastName));
+                    command.Parameters.Add(new SqlParameter("@LastName", dto_tempWorker.LastName));
                 }
 
-                if (!string.IsNullOrEmpty(tempWorker.City))
+                if (!string.IsNullOrEmpty(dto_tempWorker.City))
                 {
                     query += " AND City = @City";
-                    command.Parameters.Add(new SqlParameter("@City", tempWorker.City));
+                    command.Parameters.Add(new SqlParameter("@City", dto_tempWorker.City));
                 }
 
-                if (tempWorker.ZipCode != 0)
+                if (dto_tempWorker.ZipCode != 0)
                 {
                     query += " AND ZipCode = @ZipCode";
-                    command.Parameters.Add(new SqlParameter("@ZipCode", tempWorker.ZipCode));
+                    command.Parameters.Add(new SqlParameter("@ZipCode", dto_tempWorker.ZipCode));
                 }
 
-                if (!string.IsNullOrEmpty(tempWorker.PersonalNumber))
+                if (!string.IsNullOrEmpty(dto_tempWorker.PersonalNumber))
                 {
                     query += " AND PersonalNumber = @PersonalNumber";
-                    command.Parameters.Add(new SqlParameter("@PersonalNumber", tempWorker.PersonalNumber));
+                    command.Parameters.Add(new SqlParameter("@PersonalNumber", dto_tempWorker.PersonalNumber));
                 }
 
-                if (tempWorker.IsActive != null)
+                if (dto_tempWorker.IsActive != null)
                 {
                     query += " AND IsActive = @IsActive";
-                    command.Parameters.Add(new SqlParameter("@IsActive", tempWorker.IsActive));
+                    command.Parameters.Add(new SqlParameter("@IsActive", dto_tempWorker.IsActive));
                 }
 
                 command.CommandText = query;
@@ -106,7 +94,7 @@ namespace EksamenFinish.DAL
                 {
                     while (reader.Read())
                     {
-                        workers.Add(new M_TempWorker
+                        dto_tempWorkers.Add(new DTO_TempWorker
                         {
                             Id = (Guid)reader["Id"],
                             FirstName = (string)reader["FirstName"],
@@ -119,30 +107,31 @@ namespace EksamenFinish.DAL
                         });
                     }
                 }
-                return workers;
+                
             }
+            return dto_tempWorkers;
         }
 
         #endregion SearchTempWorkers
 
         #region UpdateWorker
 
-        public void UpdateWorker(M_TempWorker worker)
+        public void UpdateWorker(DTO_TempWorker dto_tempWorker)
         {
             try
             {
                 using (DbCommand command = _connection.CreateCommand())
                 {
-                    command.CommandText = "UPDATE TempWorkers SET FirstName = @FirstName, LastName = @LastName, @Address, @City, @ZipCode, @PersonalNumber, IsActive = @IsActive WHERE Id = @Id";
-                    command.Parameters.Add(new SqlParameter("@FirstName", worker.FirstName));
-                    command.Parameters.Add(new SqlParameter("@LastName", worker.LastName));
-                    command.Parameters.Add(new SqlParameter("@LastName", worker.Address));
-                    command.Parameters.Add(new SqlParameter("@LastName", worker.City));
-                    command.Parameters.Add(new SqlParameter("@LastName", worker.ZipCode));
-                    command.Parameters.Add(new SqlParameter("@LastName", worker.PersonalNumber));
-                    command.Parameters.Add(new SqlParameter("@IsActive", worker.IsActive));
+                    command.CommandText = "UPDATE TempWorkers SET FirstName = @FirstName, LastName = @LastName, Address = @Address, City = @City, ZipCode = @ZipCode, PersonalNumber = @PersonalNumber, IsActive = @IsActive WHERE Id = @Id";
+                    command.Parameters.Add(new SqlParameter("@FirstName", dto_tempWorker.FirstName));
+                    command.Parameters.Add(new SqlParameter("@LastName", dto_tempWorker.LastName));
+                    command.Parameters.Add(new SqlParameter("@Address", dto_tempWorker.Address));
+                    command.Parameters.Add(new SqlParameter("@City", dto_tempWorker.City));
+                    command.Parameters.Add(new SqlParameter("@ZipCode", dto_tempWorker.ZipCode));
+                    command.Parameters.Add(new SqlParameter("@PersonalNumber", dto_tempWorker.PersonalNumber));
+                    command.Parameters.Add(new SqlParameter("@IsActive", dto_tempWorker.IsActive));
                     // Id should not be changed:
-                    command.Parameters.Add(new SqlParameter("@Id", worker.Id));
+                    command.Parameters.Add(new SqlParameter("@Id", dto_tempWorker.Id));
                     command.ExecuteNonQuery();
                 }
             }
@@ -153,6 +142,26 @@ namespace EksamenFinish.DAL
         }
 
         #endregion UpdateWorker
+
+        #region DeleteTempWorker
+        public void DeleteTempWorker(Guid id)
+        {
+            try
+            {
+                using (DbCommand command = _connection.CreateCommand())
+                {
+                    command.CommandText = "DELETE FROM TempWorkers WHERE Id = @Id";
+                    command.Parameters.Add(new SqlParameter("@Id", id));
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        #endregion
 
         #region Helper Exeption
 
@@ -178,7 +187,6 @@ namespace EksamenFinish.DAL
                 _connection.Close();
                 _connection.Dispose();
             }
-
         }
 
         #endregion Helper Dispose

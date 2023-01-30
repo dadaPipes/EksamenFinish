@@ -1,8 +1,8 @@
 ﻿#region usings
 
 using EksamenFinish.Models;
-using EksamenFinish.Services;
 using EksamenFinish.Services.Commands;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -16,280 +16,338 @@ namespace EksamenFinish.ViewModels
     {
         #region Field
 
-        private M_TempWorker m_tempWorker;
-        private ObservableCollection<M_TempWorker> s_tempWorkers;
-        private VM_TempWorkerValidation vm_tempWorkerValidation;
-        private S_TempWorkerRepository s_tempWorkerRepository;
-        private C_TempWorkerCommands c_tempWorkerCommands;
+        //ViewModel for TempWorker validation
+        public VM_TempWorkerValidation TempWorkerValidationViewModel { get; set; }
 
-        #endregion Field
+        //Commands for TempWorker operations
+        private C_TempWorkerCommands _tempWorkerCommands;
+
+        //ViewModel for TempWorker collection
+        private VM_TempWorkerCollection _tempWorkersCollection;
+
+        //Observable collection for TempWorker data
+        private ObservableCollection<VM_TempWorker> _tempWorkers { get; set; }
+
+        #endregion
 
         public VM_MainViewModel()
         {
-            m_tempWorker = new M_TempWorker();
-            s_tempWorkerRepository = new S_TempWorkerRepository();
-            s_tempWorkers = new ObservableCollection<M_TempWorker>(s_tempWorkerRepository.SearchWorkers(m_tempWorker));
-            TempWorkers = s_tempWorkers;
-            vm_tempWorkerValidation = new VM_TempWorkerValidation();
-            c_tempWorkerCommands = new C_TempWorkerCommands(s_tempWorkerRepository, m_tempWorker, s_tempWorkers);
+            _selectedTempWorker = new VM_TempWorker();
+            _tempWorkerCommands = new C_TempWorkerCommands(SelectedTempWorker);
+            TempWorkerValidationViewModel = new VM_TempWorkerValidation();
+            _tempWorkers = new ObservableCollection<VM_TempWorker>();
+            _tempWorkersCollection = new VM_TempWorkerCollection();
         }
 
-        #region TempWorkerList
+        #region Selected TempWorker
 
-        public ObservableCollection<M_TempWorker> TempWorkers
+        private VM_TempWorker _selectedTempWorker;
+
+        public VM_TempWorker SelectedTempWorker
         {
-            get => s_tempWorkers;
+            get => _selectedTempWorker;
             set
             {
-                if (s_tempWorkers == value) return;
-                s_tempWorkers = value;
+                _selectedTempWorker = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
+                OnPropertyChanged(nameof(FirstName));
+            }
+        }
+
+        #endregion
+
+        public string FirstName
+        {
+            get => _selectedTempWorker != null ? _selectedTempWorker.FirstName : string.Empty;
+            set
+            {
+                if (_selectedTempWorker != null)
+                {
+                    _selectedTempWorker.FirstName = value;
+                    OnPropertyChanged(nameof(FirstName));
+                    OnPropertyChanged(nameof(SelectedTempWorker.FirstName));
+                }
+            }
+        }
+
+
+
+        #region TempWorker Collection
+
+        public ObservableCollection<VM_TempWorker> TempWorkers
+        {
+            get => _tempWorkersCollection.GetTempWorkers(_selectedTempWorker);
+            set
+            {
+                _tempWorkersCollection.TempWorkers = value;
                 OnPropertyChanged(nameof(TempWorkers));
             }
         }
 
         #endregion
 
-        #region TempWorker
+        #region TempWorker Properties
 
-        private M_TempWorker _selectedTempWorker;
-        public M_TempWorker SelectedTempWorker
+        #region TempWorker Id
+
+        private Guid _tempWorkerId;
+
+        public Guid TempWorkerId
         {
-            get { return _selectedTempWorker; }
+            get => _tempWorkerId;
             set
             {
-                m_tempWorker = value;
-                OnPropertyChanged(nameof(SelectedTempWorker));
-
-                //update individual properties of TextBoxes
-                TempWorkerFirstName = _selectedTempWorker.FirstName;
-                TempWorkerLastName = _selectedTempWorker.LastName;
-                TempWorkerAddress = _selectedTempWorker.Address;
-                TempWorkerCity = _selectedTempWorker.City;
-                TempWorkerZipCode = _selectedTempWorker.ZipCode;
-                TempWorkerPersonalNumber = _selectedTempWorker.PersonalNumber;
-                TempWorkerIsActiveTrue = _selectedTempWorker.IsActive;
-                TempWorkerIsActiveFalse = !_selectedTempWorker.IsActive;
-            }
-        }
-
-        #endregion TempWorker
-
-        #region TempWorkerProperties
-
-        #region TempWorkerFirstName
-
-        public string TempWorkerFirstName
-        {
-            get => m_tempWorker.FirstName;
-            set
-            {
-                m_tempWorker.FirstName = value;
-                OnPropertyChanged(nameof(TempWorkerFirstName));
-                OnPropertyChanged(nameof(ValidateFirstName));
+                _tempWorkerId = value;
+                OnPropertyChanged(nameof(TempWorkerId));
             }
         }
 
         #endregion
 
-        #region TempWorkerLastName
+        #region TempWorker FirstName
+
+        //public string FirstName
+        //{
+        //    get => _selectedTempWorker != null ? _selectedTempWorker.FirstName : string.Empty;
+        //    set
+        //    {
+        //        if (_selectedTempWorker != null)
+        //        {
+        //            _selectedTempWorker.FirstName = value;
+        //            OnPropertyChanged(nameof(FirstName));
+        //            OnPropertyChanged(nameof(SelectedTempWorker.FirstName));
+        //        }
+        //    }
+        //}
+
+        #endregion
+
+        #region TempWorker LastName
+
+        private string _tempWorkerlastName;
 
         public string TempWorkerLastName
         {
-            get => m_tempWorker.LastName;
+            get => _tempWorkerlastName;
             set
             {
-                m_tempWorker.LastName = value;
+                _tempWorkerlastName = value;
                 OnPropertyChanged(nameof(TempWorkerLastName));
-                OnPropertyChanged(nameof(ValidateLastName));
+                OnPropertyChanged(nameof(ValidateTempWorkerLastName));
+                SelectedTempWorker.LastName = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
             }
         }
 
         #endregion
 
-        #region TempWorkerAddress
+        #region TempWorker Address
+
+        private string _tempWorkerAddress;
 
         public string TempWorkerAddress
         {
-            get => m_tempWorker.Address;
+            get => _tempWorkerAddress;
             set
             {
-                m_tempWorker.Address = value;
+                _tempWorkerAddress = value;
                 OnPropertyChanged(nameof(TempWorkerAddress));
-                OnPropertyChanged(nameof(ValidateAddress));
+                OnPropertyChanged(nameof(ValidateTempWorkerAddress));
+                SelectedTempWorker.Address = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
             }
         }
 
         #endregion
 
-        #region TempWorkerCity
+        #region TempWorker City
+
+        private string _tempWorkerCity;
 
         public string TempWorkerCity
         {
-            get => m_tempWorker.City;
+            get => _tempWorkerCity;
             set
             {
-                m_tempWorker.City = value;
+                _tempWorkerCity = value;
                 OnPropertyChanged(nameof(TempWorkerCity));
-                OnPropertyChanged(nameof(ValidateCity));
+                OnPropertyChanged(nameof(ValidateTempWorkerCity));
+                SelectedTempWorker.City = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
             }
         }
 
         #endregion
 
-        #region TempWorkerZipCode
+        #region TempWorker ZipCode
 
-        public string TempWorkerZipCode
+        private int _tempWorkerZipCode;
+
+        public int TempWorkerZipCode
+
         {
-            get => m_tempWorker.ZipCode;
+            get => _tempWorkerZipCode;
             set
             {
-                m_tempWorker.ZipCode = value;
+                _tempWorkerZipCode = value;
                 OnPropertyChanged(nameof(TempWorkerZipCode));
-                OnPropertyChanged(nameof(ValidateZipCode));
+                OnPropertyChanged(nameof(ValidateTempWorkerZipCode));
+                SelectedTempWorker.ZipCode = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
             }
         }
 
         #endregion
 
-        #region TempWorkerPersonalNumber
+        #region TempWorker PersonalNumber
+
+        private string _tempWorkerPersonalNumber;
 
         public string TempWorkerPersonalNumber
+
         {
-            get => m_tempWorker.PersonalNumber;
+            get => _tempWorkerPersonalNumber;
             set
             {
-                m_tempWorker.PersonalNumber = value;
+                _tempWorkerPersonalNumber = value;
                 OnPropertyChanged(nameof(TempWorkerPersonalNumber));
-                OnPropertyChanged(nameof(ValidatePersonalNumber));
+                OnPropertyChanged(nameof(ValidateTempWorkerPersonalNumber));
+                SelectedTempWorker.PersonalNumber = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
             }
         }
 
         #endregion
+
+        #region TempWorker IsActive
 
         #region IsActive
 
+        // The value of the TempWorkerIsActive property is based on the values of TempWorkerIsActiveTrue and TempWorkerIsActiveFalse.
+        private bool _tempWorkerIsActive;
+
         public bool TempWorkerIsActive
         {
-            get => m_tempWorker.IsActive;
+            get => _tempWorkerIsActive;
             set
             {
-                m_tempWorker.IsActive = value;
+                _tempWorkerIsActive = value;
                 OnPropertyChanged(nameof(TempWorkerIsActive));
+                SelectedTempWorker.IsActive = value;
+                OnPropertyChanged(nameof(SelectedTempWorker));
             }
         }
 
-        private bool _isActiveTrue;
+        #endregion
+
+        #region IsActive True
+
+        private bool _tempWorkerIsActiveTrue;
 
         public bool TempWorkerIsActiveTrue
         {
-            get => _isActiveTrue;
+            get => _tempWorkerIsActiveTrue;
             set
             {
-                _isActiveTrue = value;
+                _tempWorkerIsActiveTrue = value;
                 if (value)
+                {
+                    TempWorkerIsActiveFalse = false;
                     TempWorkerIsActive = true;
+                }
+                OnPropertyChanged(nameof(TempWorkerIsActiveTrue));
             }
         }
 
-        private bool _isActiveFalse;
+        #endregion
+
+        #region IsActive False
+
+        private bool _tempWorkerIsActiveFalse;
 
         public bool TempWorkerIsActiveFalse
         {
-            get => _isActiveFalse;
+            get => _tempWorkerIsActiveFalse;
             set
             {
-                _isActiveFalse = value;
+                _tempWorkerIsActiveFalse = value;
                 if (value)
+                {
+                    TempWorkerIsActiveTrue = false;
                     TempWorkerIsActive = false;
+                }
+                OnPropertyChanged(nameof(TempWorkerIsActiveFalse));
             }
         }
 
-        #endregion IsActive
-
-        #endregion TempWorkerProperties
-
-        #region TempWorkerValidationProperties
-
-        #region ValidateFirstName
-
-        public string ValidateFirstName =>
-        vm_tempWorkerValidation.ValidateFirstName(TempWorkerFirstName);
-
         #endregion
-
-        #region ValidateLastName
-
-        public string ValidateLastName =>
-        vm_tempWorkerValidation.ValidateLastName(TempWorkerLastName);
-
-        #endregion
-
-        #region Validate Address
-
-        public string ValidateAddress =>
-        vm_tempWorkerValidation.ValidateAddress(TempWorkerAddress);
-
-        #endregion
-
-        #region ValidateCity
-
-        public string ValidateCity =>
-        vm_tempWorkerValidation.ValidateCity(TempWorkerCity);
-
-        #endregion
-
-        #region ValidateZipCode
-
-        public string ValidateZipCode =>
-        vm_tempWorkerValidation.ValidateZipCode(TempWorkerZipCode);
-
-        #endregion
-
-        #region ValidatePersonalNumber
-
-        public string ValidatePersonalNumber =>
-        vm_tempWorkerValidation.ValidatePersonalNumber(TempWorkerPersonalNumber);
 
         #endregion
 
         #endregion
 
-        #region VM_TempWorkerValidation
+        #region TempWorker Validation Properties
 
-        public VM_TempWorkerValidation VM_TempWorkerValidation
-        {
-            get { return vm_tempWorkerValidation; }
-            set { vm_tempWorkerValidation = value; }
-        }
+        #region Validate TempWorkerFirstName
+
+        // The ValidateFirstName property is used to validate the TempWorkerFirstName field in the UI
+        public string ValidateTempWorkerFirstName =>
+            TempWorkerValidationViewModel.ValidateFirstName(FirstName);
 
         #endregion
 
-        #region S_TempWorkerRepository
+        #region Validate TempWorkerLastName
 
-        public S_TempWorkerRepository S_TempWorkerRepository
-        {
-            get { return s_tempWorkerRepository; }
-            set { s_tempWorkerRepository = value; }
-        }
+        public string ValidateTempWorkerLastName =>
+            TempWorkerValidationViewModel.ValidateLastName(TempWorkerLastName);
 
-        #endregion TempWorkerRepository
+        #endregion
+
+        #region Validate TempWorkerAddress
+
+        public string ValidateTempWorkerAddress =>
+            TempWorkerValidationViewModel.ValidateAddress(TempWorkerAddress);
+
+        #endregion
+
+        #region Validate TempWorkerCity
+
+        public string ValidateTempWorkerCity =>
+            TempWorkerValidationViewModel.ValidateCity(TempWorkerCity);
+
+        #endregion
+
+        #region Validate TempWorkerPersonalNumber
+
+        public string ValidateTempWorkerPersonalNumber =>
+            TempWorkerValidationViewModel.ValidatePersonalNumber(TempWorkerPersonalNumber);
+
+        #endregion
+
+        #region Validate TempWorkerZipCode
+
+        public string ValidateTempWorkerZipCode =>
+            TempWorkerValidationViewModel.ValidateZipCode(TempWorkerZipCode.ToString());
+
+        #endregion
+
+        #endregion
 
         #region TempWorkerCommands
 
-        public C_TempWorkerCommands CommandErrors
-        {
-            get { return c_tempWorkerCommands; }
-            set { c_tempWorkerCommands = value; }
-        }
+        // The CreateTempWorkerCommand allows for creating a new temp worker by calling the corresponding method in the TempWorkerCommands class
+        //public ICommand CreateTempWorkerCommand => _tempWorkerCommands.CreateTempWorkerCommand;
 
-        public ICommand CreateTempWorkerCommand => c_tempWorkerCommands.CreateTempWorkerCommand;
-        public ICommand SearchTempWorkerCommand => c_tempWorkerCommands.SearchTempWorkerCommand;
-        public ICommand UpdateTempWorkerCommand => c_tempWorkerCommands.UpdateTempWorkerCommand;
+        // The SearchTempWorkerCommand allows for searching for a temp worker by calling the corresponding method in the TempWorkerCommands class
+        //public ICommand SearchTempWorkerCommand => _tempWorkerCommands.SearchTempWorkerCommand;
 
-        //public ICommand GetTempWorkerCommand => c_tempWorkerCommands.GetTempWorkerCommand;
-        //public ICommand DeleteTempWorkerCommand => c_tempWorkerCommands.DeleteTempWorkerCommand;
+        // The UpdateTempWorkerCommand allows for updating a temp worker by calling the corresponding method in the TempWorkerCommands class
+        public ICommand UpdateTempWorkerCommand => _tempWorkerCommands.UpdateTempWorkerCommand;
 
-        #endregion TempWorkerCommands
+        // The DeleteTempWorkerCommand allows for deleting a temp worker by calling the corresponding method in the TempWorkerCommands class
+        //public ICommand DeleteTempWorkerCommand => _tempWorkerCommands.DeleteTempWorkerCommand;
+
+        #endregion
 
         #region INotifyPropertyChanged Implementation
 

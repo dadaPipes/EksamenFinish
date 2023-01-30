@@ -26,48 +26,39 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <!--TEXTBLOCKS-->
+    <!--NAMES FOR TEXTBOXES-->
 
-    <TextBlock Text="Vikar Information" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40" Grid.RowSpan="2" />
-    <TextBlock Text="ID" Grid.Row="1" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-    <TextBlock Text="Fornavn" Grid.Row="2" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-    <TextBlock Text="Efternavn" Grid.Row="3" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-    <TextBlock Text="Adresse" Grid.Row="4" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-    <TextBlock Text="By" Grid.Row="5" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-    <TextBlock Text="Postnummer" Grid.Row="6" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-    <TextBlock Text="CPR-Nummer" Grid.Row="7" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
+    <StackPanel Orientation="Vertical">
+      <TextBlock Text="Vikar Information" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40" />
+      <TextBlock Text="ID" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="Fornavn" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="Efternavn" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="Adresse" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="By" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="Postnummer" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="CPR-Nummer" Margin="5,8,5,8" Padding="3" />
+      <TextBlock Text="Aktiv" Margin="5,8,5,8" Padding="3" />
+    </StackPanel>
 
-    <TextBlock Text="Aktiv" Grid.Row="8" Grid.Column="0" Margin="5,8,5,8" Padding="3" />
-
-    <!--TEXTBOXES-->
-
-    <TextBox Name="ID" Grid.Row="1" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorker.Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBox Name="txtFirstName" Grid.Row="2" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorkerFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBox Name="txtLastName" Grid.Row="3" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorkerLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBox Name="txtAddress" Grid.Row="4" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorkerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBox Name="txtCity" Grid.Row="5" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorkerCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBox Name="txtZipCode" Grid.Row="6" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorkerZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBox Name="txtPersonalNumber" Grid.Row="7" Grid.Column="1" Margin="5,8,5,8" Padding="3" Text="{Binding TempWorkerPersonalNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-    <RadioButton x:Name="Active" Grid.Column="1" Content="Aktiv" HorizontalAlignment="Left" Margin="28,0,0,0" Grid.Row="8" VerticalAlignment="Center" IsChecked="{Binding TempWorkerIsActiveTrue, Mode=TwoWay, ConverterParameter=True}" />
-
-    <RadioButton x:Name="NotActive" Grid.Column="1" Content="Ikke Aktiv" HorizontalAlignment="Left" Margin="123,0,0,0" Grid.Row="8" VerticalAlignment="Center" IsChecked="{Binding TempWorkerIsActiveFalse, Mode=TwoWay, ConverterParameter=False}" />
-
-    <!--COMMANDS-->
-
-    <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" Margin="5,7,125,6" Grid.ColumnSpan="2">
-      <Button Name="btnAdd" Content="TILFØJ" Margin="5,8" Padding="3" Command="{Binding CreateTempWorkerCommand}" />
-      <Button Name="btnSearch" Content="SØG" Margin="5,8" Padding="3" Command="{Binding SearchTempWorkerCommand}" />
-      <Button Name="btnUpdate" Content="OPDATER" Margin="5,8" Padding="3" Command="{Binding UpdateTempWorkerCommand}" />
-      
-      
-      <!--<Button Name="btnDelete" Content="SLET" Margin="5,8" Padding="3" Command="{Binding DeleteTempWorkerCommand}" />-->
-      
+    <!--TEMPWORKER PROPERTIES-->
+    
+     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" DataContext="{Binding SelectedTempWorker}" >
+      <TextBox Name="ID" Margin="5,8,5,8" Padding="3" Text="{Binding Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBox Name="txtFirstName" Margin="5,8,5,8" Padding="3" Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBox Name="txtLastName" Margin="5,8,5,8" Padding="3" Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBox Name="txtAddress" Margin="5,8,5,8" Padding="3" Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBox Name="txtCity" Margin="5,8,5,8" Padding="3" Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBox Name="txtZipCode" Margin="5,8,5,8" Padding="3" Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+      <TextBox Name="txtPersonalNumber" Margin="5,8,5,8" Padding="3" Text="{Binding PersonalNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+      <StackPanel Orientation="Horizontal">
+        <RadioButton x:Name="Active" Content="Aktiv" IsChecked="{Binding IsActiveTrue, Mode=TwoWay}" />
+        <RadioButton x:Name="NotActive" Content="Ikke Aktiv" IsChecked="{Binding IsActiveFalse, Mode=TwoWay}" />
+      </StackPanel>
     </StackPanel>
 
     <!--LISTBOX -->
 
-    <ListBox Grid.Column="2" Height="300" ItemsSource="{Binding TempWorkers}" SelectedItem="{Binding SelectedTempWorker}" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="245,33,0,0" VerticalAlignment="Top" Width="198" Grid.RowSpan="7" Grid.Row="2">
+    <ListBox x:Name="TempWorkerListBox" Grid.Column="4" Height="300" ItemsSource="{Binding TempWorkers}" SelectedItem="{Binding TempWorker}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="198">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
@@ -78,34 +69,28 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
-
+    
     <!-- ERROR MESSAGES -->
-    <TextBlock x:Name="ErrorFirstName" Grid.Column="2" HorizontalAlignment="center" Margin="10" Grid.Row="2" TextWrapping="Wrap" Text="{Binding ValidateFirstName}" VerticalAlignment="center" Height="23" Width="140" />
 
-    <TextBlock x:Name="ErrorLastName" Grid.Column="2" HorizontalAlignment="center" Margin="10" Grid.Row="3" TextWrapping="Wrap" Text="{Binding ValidateLastName}" VerticalAlignment="center" Height="23" Width="140" />
+    <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Height="360">
+      <TextBlock x:Name="ErrorFirstName" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerFirstName}" VerticalAlignment="center" Height="23" Width="140" />
+      <TextBlock x:Name="ErrorLastName" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerLastName}" VerticalAlignment="center" Height="23" Width="140" />
+      <TextBlock x:Name="ErrorAddress" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerAddress}" VerticalAlignment="center" Height="23" Width="140" />
+      <TextBlock x:Name="ErrorCity" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerCity}" VerticalAlignment="center" Height="23" Width="140" />
+      <TextBlock x:Name="ErrorZipCode" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerZipCode}" VerticalAlignment="center" Height="23" Width="140" />
+      <TextBlock x:Name="ErrorPersonalNumber" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerPersonalNumber}" VerticalAlignment="center" Height="23" Width="140" />
+    </StackPanel>
 
-    <TextBlock x:Name="ErrorAddress" Grid.Column="2" HorizontalAlignment="center" Margin="10" Grid.Row="4" TextWrapping="Wrap" Text="{Binding ValidateAddress}" VerticalAlignment="center" Height="23" Width="140" />
+    
 
-    <TextBlock x:Name="ErrorCity" Grid.Column="2" HorizontalAlignment="center" Margin="10" Grid.Row="5" TextWrapping="Wrap" Text="{Binding ValidateCity}" VerticalAlignment="center" Height="23" Width="140" />
+    <!--COMMANDS-->
 
-    <TextBlock x:Name="ErrorZipCode" Grid.Column="2" HorizontalAlignment="center" Margin="10" Grid.Row="6" TextWrapping="Wrap" Text="{Binding ValidateZipCode}" VerticalAlignment="center" Height="23" Width="140" />
-
-    <TextBlock x:Name="ErrorPersonalNumber" Grid.Column="2" HorizontalAlignment="center" Margin="10" Grid.Row="7" TextWrapping="Wrap" Text="{Binding ValidatePersonalNumber}" VerticalAlignment="center" Height="23" Width="140" />
-
-    <TextBlock x:Name="EmptyBoxesError" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="8" TextWrapping="Wrap" Text="{Binding CommandErrors.ErrorMessageEmptyBox}" VerticalAlignment="Top" Height="41" Width="161" Margin="0,1,0,0" />
-
-   
-
-    <!--LISTVIEW
-
-    <ListView x:Name="TempWorkerListView" Grid.Column="4" Grid.RowSpan="9" ItemsSource="{}">
-      <ListView.View>
-        <GridView>
-          <GridViewColumn />
-        </GridView>
-      </ListView.View>
-    </ListView>
-    <Button x:Name="TestButton" Grid.Column="2" Content="Get all TempWorkers from database" HorizontalAlignment="Left" Margin="51,0,0,0" Grid.Row="9" VerticalAlignment="Center" Height="57" Width="214" Grid.ColumnSpan="3" Click="TestButton_Click" />
-    -->
-  </Grid>
+    <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" Margin="5,7,125,6" Grid.ColumnSpan="2">
+      <Button Name="btnAdd" Content="TILFØJ" Margin="5,8" Padding="3" Command="{Binding CreateTempWorkerCommand}" />
+      <Button Name="btnSearch" Content="SØG" Margin="5,8" Padding="3" Command="{Binding SearchTempWorkerCommand}" />
+      <Button Name="btnUpdate" Content="OPDATER" Margin="5,8" Padding="3" Command="{Binding UpdateTempWorkerCommand}" />
+      <Button Name="btnDelete" Content="SLET" Margin="5,8" Padding="3" Command="{Binding DeleteTempWorkerCommand}" />
+    </StackPanel>
+    
+</Grid>
 </Window>

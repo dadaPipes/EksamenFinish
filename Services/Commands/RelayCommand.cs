@@ -3,13 +3,13 @@ using System.Windows.Input;
 
 namespace EksamenFinish.Services.Commands
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand<T> : ICommand
     {
         private bool isExecuting;
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
+        private readonly Action<T> _execute;
+        private readonly Func<T, bool> _canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -23,7 +23,7 @@ namespace EksamenFinish.Services.Commands
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute();
+            return _canExecute == null || _canExecute((T)parameter);
         }
 
         public void Execute(object parameter)
@@ -31,8 +31,9 @@ namespace EksamenFinish.Services.Commands
             if (isExecuting) return;
 
             isExecuting = true;
-            _execute();
+            _execute((T)parameter);
             isExecuting = false;
         }
     }
+
 }

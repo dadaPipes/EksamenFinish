@@ -4,17 +4,25 @@ namespace EksamenFinish.ViewModels
 {
     public class VM_TempWorkerValidation
     {
+        // Responsible for validating the properties of a TempWorker,
+        // and returning an error message if the name is invalid. 
+
+        #region Field
+
         //The regular expression ^[a-zA-Z]*$ is used to match any string that consists only of letters (uppercase or lowercase).
         private readonly Regex _onlyLetters = new Regex("^[a-zA-Z]*$");
 
         //Regular expression ^[0-9]*$ to match any string that consists only of digits.
         private readonly Regex _onlyDigits = new Regex("^[0-9]*$");
 
-        #region ValidateFirstName
+        #endregion
+
+        #region Validate FirstName
 
         public string ValidateFirstName(string firstName)
         {
-            firstName = firstName ?? ""; // assigns an empty string as default value if firstName is null or empty
+            // assigns an empty string as default value if firstName is null or empty
+            firstName ??= ""; 
             
             if (firstName == "X Æ A-12")
             {
@@ -36,11 +44,11 @@ namespace EksamenFinish.ViewModels
 
         #endregion ValidateFirstName
 
-        #region ValidateLastName
+        #region Validate LastName
 
         public string ValidateLastName(string lastName)
         {
-            lastName = lastName ?? "";
+            lastName ??= "";
 
             if (!_onlyLetters.IsMatch(lastName))
             {
@@ -58,11 +66,11 @@ namespace EksamenFinish.ViewModels
 
         #endregion ValidateLastName
 
-        #region ValidateAddress
+        #region Validate Address
 
         public string ValidateAddress(string address)
         {
-            address = address ?? "";
+            address ??= "";
 
             if (!_onlyLetters.IsMatch(address))
             {
@@ -80,11 +88,11 @@ namespace EksamenFinish.ViewModels
 
         #endregion ValidateAddress
 
-        #region ValidateCity
+        #region Validate City
 
         public string ValidateCity(string city)
         {
-            city = city ?? "";
+            city ??= "";
 
             if (!_onlyLetters.IsMatch(city))
             {
@@ -102,11 +110,11 @@ namespace EksamenFinish.ViewModels
 
         #endregion ValidateCity
 
-        #region ValidateZipCode
+        #region Validate ZipCode
 
         public string ValidateZipCode(string zipCode)
         {
-            zipCode = zipCode ?? "";
+            zipCode ??= "";
 
             if (!_onlyDigits.IsMatch(zipCode))
 
@@ -125,11 +133,11 @@ namespace EksamenFinish.ViewModels
 
         #endregion ValidateZipCode
 
-        #region ValidatePersonalNumber
+        #region Validate PersonalNumber
 
         public string ValidatePersonalNumber(string personalNumber)
         {
-            personalNumber = personalNumber ?? "";
+            personalNumber ??= "";
 
             if (!_onlyDigits.IsMatch(personalNumber))
 
