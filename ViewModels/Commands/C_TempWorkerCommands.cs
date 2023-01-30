@@ -1,9 +1,10 @@
-﻿using EksamenFinish.ViewModels;
+﻿
+using EksamenFinish.Services;
 using System.Windows.Input;
 
-namespace EksamenFinish.Services.Commands
+namespace EksamenFinish.ViewModels.Commands
 {
-    public class C_TempWorkerCommands : VM_MainViewModel
+    public class C_TempWorkerCommands : IViewModel
     {
         #region Fields
 

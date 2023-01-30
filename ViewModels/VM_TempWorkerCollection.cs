@@ -6,8 +6,9 @@ using System.Collections.ObjectModel;
 namespace EksamenFinish.ViewModels
 {
     //ViewModel for TempWorker collection
-    public class VM_TempWorkerCollection : VM_MainViewModel
+    public class VM_TempWorkerCollection : IViewModel
     {
+        public VM_TempWorker TempWorker { get; set; }
         public ObservableCollection<VM_TempWorker> TempWorkers { get; set; }
         private S_TempWorkerRepository s_tempWorkerRepository { get; set; }
 

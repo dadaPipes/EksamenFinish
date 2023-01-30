@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace EksamenFinish.Services.Commands
+namespace EksamenFinish.ViewModels.Commands
 {
     public class RelayCommand : ICommand
     {

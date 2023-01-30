@@ -2,7 +2,7 @@
 
 namespace EksamenFinish.ViewModels
 {
-    public class VM_TempWorkerValidation : VM_MainViewModel
+    public class VM_TempWorkerValidation : IViewModel
     {
         // //ViewModel for TempWorker validation
         // Responsible for validating the properties of a TempWorker,

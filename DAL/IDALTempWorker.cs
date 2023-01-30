@@ -10,7 +10,7 @@ namespace EksamenFinish.DAL
 
         List<DTO_TempWorker> SearchTempWorkers(DTO_TempWorker dto_tempWorker);
 
-        void UpdateWorker(DTO_TempWorker dto_tempWorkerrker);
+        void UpdateWorker(DTO_TempWorker dto_tempWorker);
 
         void DeleteTempWorker(Guid id);
     }

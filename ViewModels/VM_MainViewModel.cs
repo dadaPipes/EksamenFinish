@@ -1,5 +1,7 @@
 ﻿#region usings
 
+using EksamenFinish.ViewModels.Commands;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -7,19 +9,42 @@ using System.Runtime.CompilerServices;
 
 namespace EksamenFinish.ViewModels
 {
-    public class VM_MainViewModel : INotifyPropertyChanged
+    public class VM_MainViewModel
     {
-       #region INotifyPropertyChanged Implementation
+        private readonly ITempWorkerViewModelFactory _tempWorkerViewModelFactory;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public VM_MainViewModel() : this(new ViewModelFactory()) { }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public VM_MainViewModel(ITempWorkerViewModelFactory tempWorkerViewModelFactory)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _tempWorkerViewModelFactory = tempWorkerViewModelFactory;
+            TempWorkerViewModel = _tempWorkerViewModelFactory.CreateTempWorkerViewModel();
+            TempWorkerValidationViewModel = _tempWorkerViewModelFactory.CreateTempWorkerValidationViewModel();
+            TempWorkerCollectionViewModel = _tempWorkerViewModelFactory.CreateTempWorkerCollectionViewModel();
+            TempWorkerCommands = _tempWorkerViewModelFactory.CreateTempWorkerCommands(TempWorkerViewModel);
         }
+        public VM_TempWorker TempWorkerViewModel { get; }
+        public VM_TempWorkerValidation TempWorkerValidationViewModel { get; }
+        public VM_TempWorkerCollection TempWorkerCollectionViewModel { get; }
+        public C_TempWorkerCommands TempWorkerCommands { get; }
 
-        #endregion INotifyPropertyChanged Implementation
+        public IViewModel CreateViewModel(string type)
+        {
+            switch (type)
+            {
+                case "TempWorkerValidation":
+                    return TempWorkerValidationViewModel;
+                case "TempWorker":
+                    return TempWorkerViewModel;
+                case "TempWorkerCollection":
+                    return TempWorkerCollectionViewModel;
+                case "TempWorkerCommands":
+                    return TempWorkerCommands;
+                default:
+                    throw new ArgumentException("Invalid ViewModel type specified.");
+            }
+        }
     }
-}
 
-// Help ME please !
+
+}

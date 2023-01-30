@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace EksamenFinish.ViewModels
 {
-    public class VM_TempWorker : VM_MainViewModel
+    public class VM_TempWorker : IViewModel, INotifyPropertyChanged
     {
         private M_TempWorker _model;
 
@@ -27,7 +27,7 @@ namespace EksamenFinish.ViewModels
             get => _model.Id;
             set
             {
-                _model.Id = (Guid)value;
+                _model.Id = value;
                 OnPropertyChanged(nameof(Id));
             }
         }
@@ -171,5 +171,16 @@ namespace EksamenFinish.ViewModels
         #endregion IsActive False
 
         #endregion TempWorker bool IsActive
+
+        #region INotifyPropertyChanged Implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion INotifyPropertyChanged Implementation
     }
 }
