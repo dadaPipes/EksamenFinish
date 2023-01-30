@@ -6,7 +6,7 @@ namespace EksamenFinish.Services
 {
     // Service class that maps between the DTO_TempWorker data transfer object and the VM_TempWorker view model.
     // S_TempWorkerMapper class is responsible for converting data between the data layer and the presentation layer,
-    // which is a necessary task in order to properly separate the concerns of each layer.
+    // which is a necessary task in order to properly separate the concerns of each layer (!)
 
     public class S_TempWorkerMapper
     {

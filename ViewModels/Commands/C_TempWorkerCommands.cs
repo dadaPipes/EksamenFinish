@@ -48,7 +48,7 @@ namespace EksamenFinish.ViewModels.Commands
             {
                 return new RelayCommand(() =>
                 {
-                    //vm_tempWorkerCollection.TempWorkers.Clear();
+                    vm_tempWorkerCollection.TempWorkers.Clear();
                     vm_tempWorkerCollection.GetTempWorkers(seletedTempWorker);
                 },
                 () => true);

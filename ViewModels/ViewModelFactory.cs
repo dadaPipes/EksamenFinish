@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace EksamenFinish.ViewModels
 {
+    // Provides implementation of the methods to create instances of ViewModels, and a CommandClass related to TempWorker
+    // Returns new intances of the classes 
     public class ViewModelFactory : ITempWorkerViewModelFactory
     {
         public VM_TempWorker CreateTempWorkerViewModel()
