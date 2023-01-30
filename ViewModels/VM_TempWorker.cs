@@ -1,11 +1,15 @@
-﻿using EksamenFinish.Models;
+﻿#region Usings
+
+using EksamenFinish.Models;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+#endregion
+
 namespace EksamenFinish.ViewModels
 {
-    public class VM_TempWorker : INotifyPropertyChanged
+    public class VM_TempWorker : VM_MainViewModel
     {
         private M_TempWorker _model;
 
@@ -167,16 +171,5 @@ namespace EksamenFinish.ViewModels
         #endregion IsActive False
 
         #endregion TempWorker bool IsActive
-
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion INotifyPropertyChanged Implementation
     }
 }

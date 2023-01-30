@@ -81,8 +81,6 @@
       <TextBlock x:Name="ErrorPersonalNumber" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateTempWorkerPersonalNumber}" VerticalAlignment="center" Height="23" Width="140" />
     </StackPanel>
 
-    
-
     <!--COMMANDS-->
 
     <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" Margin="5,7,125,6" Grid.ColumnSpan="2">

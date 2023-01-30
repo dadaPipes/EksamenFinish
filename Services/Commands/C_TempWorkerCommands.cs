@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace EksamenFinish.Services.Commands
 {
-    public class C_TempWorkerCommands
+    public class C_TempWorkerCommands : VM_MainViewModel
     {
         #region Fields
 
@@ -24,42 +24,44 @@ namespace EksamenFinish.Services.Commands
 
         #region CreateTempWorkerCommand
 
-        //public ICommand CreateTempWorkerCommand
-        //{
-        //    get
-        //    {
-        //        return new RelayCommand(() =>
-        //        {
-        //            s_tempWorkerRepository.CreateTempWorker(seletedTempWorker);
-        //        },
-        //        () => true);
+        public ICommand CreateTempWorkerCommand
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    s_tempWorkerRepository.CreateTempWorker(seletedTempWorker);
+                },
+                () => true);
 
-        //    }
-        //}
+            }
+        }
 
         #endregion CreateTempWorkerCommand
 
         #region SearchTempWorkerCommand
 
-        //public ICommand SearchTempWorkerCommand
-        //{
-        //    get
-        //    {
-        //        return new RelayCommand(() =>
-        //        {
-        //            vm_tempWorkerCollection.TempWorkers.Clear();
-        //            vm_tempWorkerCollection.GetTempWorkers(seletedTempWorker);
-        //        },
-        //        () => true);
-        //    }
-        //}
+        public ICommand SearchTempWorkerCommand
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    vm_tempWorkerCollection.TempWorkers.Clear();
+                    vm_tempWorkerCollection.GetTempWorkers(seletedTempWorker);
+                },
+                () => true);
+            }
+        }
 
         #endregion SearchTempWorkerCommand
 
         #region UpdateTempWorker
 
-        public ICommand UpdateTempWorkerCommand => new RelayCommand<VM_TempWorker>(selectedTempWorker =>
-        s_tempWorkerRepository.UpdateTempWorker(selectedTempWorker), selectedTempWorker => true);
+        public ICommand UpdateTempWorkerCommand => new RelayCommand(() =>
+        {
+            s_tempWorkerRepository.UpdateTempWorker(seletedTempWorker);
+        }, () => true);
 
 
 
@@ -67,10 +69,10 @@ namespace EksamenFinish.Services.Commands
 
         #region DeleteCommand
 
-        //public ICommand DeleteTempWorkerCommand => new RelayCommand(() =>
-        //{
-        //    s_tempWorkerRepository.DeleteTempWorker(seletedTempWorker.Id);
-        //}, () => true);
+        public ICommand DeleteTempWorkerCommand => new RelayCommand(() =>
+        {
+            s_tempWorkerRepository.DeleteTempWorker(seletedTempWorker.Id);
+        }, () => true);
 
         #endregion DeleteCommand
     }
