@@ -20,8 +20,6 @@ namespace EksamenFinish.ViewModels
 
         // Used for data binding in the UI layer.
 
-        #region TempWorker Guid Id
-
         public Guid Id
         {
             get => _model.Id;
@@ -32,10 +30,6 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion TempWorker Guid Id
-
-        #region TempWorker string FirstName
-
         public string FirstName
         {
             get => _model.FirstName;
@@ -44,39 +38,20 @@ namespace EksamenFinish.ViewModels
                 _model.FirstName = value;
                 OnPropertyChanged(nameof(FirstName));
             }
+
         }
-
-        #endregion TempWorker string FirstName
-
-        #region TempWorker string LastName
 
         public string LastName
         {
             get => _model.LastName;
             set
-            {
+            { 
                 _model.LastName = value;
                 OnPropertyChanged(nameof(LastName));
             }
         }
 
-        #endregion TempWorker string LastName
-
-        #region TempWorker string Address
-
-        public string Address
-        {
-            get => _model.Address;
-            set
-            {
-                _model.Address = value;
-                OnPropertyChanged(nameof(Address));
-            }
-        }
-
-        #endregion TempWorker string Address
-
-        #region TempWorker string City
+        public string FullName => FirstName + " " + LastName;
 
         public string City
         {
@@ -88,9 +63,14 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion TempWorker string City
-
-        #region TempWorker int ZipCode
+        public string Address
+        {
+            get => _model.Address;
+            set { 
+                _model.Address = value;
+                OnPropertyChanged(nameof(Address));
+            }
+        }
 
         public int ZipCode
         {
@@ -101,9 +81,7 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion TempWorker int ZipCode
 
-        #region TempWorker string PersonalNumber
 
         public string PersonalNumber
         {
@@ -113,8 +91,6 @@ namespace EksamenFinish.ViewModels
                 OnPropertyChanged(nameof(PersonalNumber));
             }
         }
-
-        #endregion TempWorker string PersonalNumber
 
         #region TempWorker bool IsActive
 
@@ -127,8 +103,6 @@ namespace EksamenFinish.ViewModels
                 OnPropertyChanged(nameof(IsActive));
             }
         }
-
-        #region IsActive True
 
         private bool _IsActiveTrue;
 
@@ -147,10 +121,6 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion IsActive True
-
-        #region IsActive False
-
         private bool _IsActiveFalse;
 
         public bool IsActiveFalse
@@ -167,8 +137,6 @@ namespace EksamenFinish.ViewModels
                 OnPropertyChanged(nameof(IsActiveFalse));
             }
         }
-
-        #endregion IsActive False
 
         #endregion TempWorker bool IsActive
 

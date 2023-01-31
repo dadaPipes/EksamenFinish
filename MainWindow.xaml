@@ -40,9 +40,10 @@
       <TextBlock Text="Aktiv" Margin="5,8,5,8" Padding="3" />
     </StackPanel>
 
-    <!--TEMPWORKER PROPERTIES-->
+    <!--TEXTBOX TEMPWORKER PROPERTIES-->
 
     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" DataContext="{Binding TempWorkerViewModel}">
+      <!--Binding TempWorkerCollectionViewModel ?? AND SelectedTempWorker.FirstName ?? -->
       <TextBox Name="ID" Margin="5,8,5,8" Padding="3" Text="{Binding Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
       <TextBox Name="txtFirstName" Margin="5,8,5,8" Padding="3" Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
       <TextBox Name="txtLastName" Margin="5,8,5,8" Padding="3" Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

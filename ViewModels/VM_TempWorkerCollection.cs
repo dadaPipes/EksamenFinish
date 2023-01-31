@@ -19,6 +19,7 @@ namespace EksamenFinish.ViewModels
 
         private ObservableCollection<VM_TempWorker> _tempWorkers;
 
+        
         public ObservableCollection<VM_TempWorker> TempWorkers
         {
             get { return _tempWorkers; }
@@ -33,7 +34,6 @@ namespace EksamenFinish.ViewModels
         /// <summary>
         /// Takes a VM_TempWorker as an argument. Calls the SearchTempWorkers method and returns a List.
         /// The List is used to create an instance of an ObservableCollection and sets it to TempWorkers property.
-        /// Notifies TempWorkers property of the change.
         /// </summary>
         
         public void GetTempWorkers(VM_TempWorker vm_tempWorker)
