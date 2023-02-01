@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace EksamenFinish.ViewModels
 {
-    public class VM_TempWorker : IViewModel, INotifyPropertyChanged
+    public class VM_TempWorker : INotifyPropertyChanged
     {
         private M_TempWorker _model;
 
@@ -27,6 +27,7 @@ namespace EksamenFinish.ViewModels
             {
                 _model.Id = value;
                 OnPropertyChanged(nameof(Id));
+                
             }
         }
 

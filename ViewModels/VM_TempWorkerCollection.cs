@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace EksamenFinish.ViewModels
 {
     //ViewModel for TempWorker collection
-    public class VM_TempWorkerCollection : IViewModel, INotifyPropertyChanged
+    public class VM_TempWorkerCollection : INotifyPropertyChanged
     {
         public VM_TempWorker TempWorker { get; set; }
 

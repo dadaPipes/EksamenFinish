@@ -1,5 +1,4 @@
-﻿using EksamenFinish.Models;
-using EksamenFinish.ViewModels;
+﻿using EksamenFinish.ViewModels;
 using System.Collections.Generic;
 
 namespace EksamenFinish.Services

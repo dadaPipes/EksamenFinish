@@ -42,8 +42,7 @@
 
     <!--TEXTBOX TEMPWORKER PROPERTIES-->
 
-    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" DataContext="{Binding TempWorkerViewModel}">
-      <!--Binding TempWorkerCollectionViewModel ?? AND SelectedTempWorker.FirstName ?? -->
+    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" DataContext="{Binding vm_TempWorker}">
       <TextBox Name="ID" Margin="5,8,5,8" Padding="3" Text="{Binding Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
       <TextBox Name="txtFirstName" Margin="5,8,5,8" Padding="3" Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
       <TextBox Name="txtLastName" Margin="5,8,5,8" Padding="3" Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -59,7 +58,7 @@
 
     <!--LISTBOX -->
 
-    <ListBox x:Name="TempWorkerListBox" Grid.Column="4" Height="300" DataContext="{Binding TempWorkerCollectionViewModel}" ItemsSource="{Binding TempWorkers}" SelectedItem="{Binding TempWorker}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="198">
+    <ListBox x:Name="TempWorkerListBox" Grid.Column="4" Height="300" DataContext="{Binding vm_TempWorkerCollection}" ItemsSource="{Binding TempWorkers}" SelectedItem="{Binding TempWorker}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="198">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
@@ -74,7 +73,7 @@
 
     <!-- ERROR MESSAGES -->
 
-    <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Height="360" DataContext="{Binding TempWorkerValidationViewModel}">
+    <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Height="360" DataContext="{Binding vm_TempWorkerValidation}">
       <TextBlock x:Name="ErrorFirstName" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateFirstName}" VerticalAlignment="center" Height="23" Width="140" />
       <TextBlock x:Name="ErrorLastName" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateLastName}" VerticalAlignment="center" Height="23" Width="140" />
       <TextBlock x:Name="ErrorAddress" Margin="5,8,5,8" Padding="3" Text="{Binding ValidateAddress}" VerticalAlignment="center" Height="23" Width="140" />
@@ -85,7 +84,7 @@
 
     <!--COMMANDS-->
 
-    <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" Margin="5,7,125,6" Grid.ColumnSpan="2" DataContext="{Binding TempWorkerCommands}">
+    <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" Margin="5,7,125,6" Grid.ColumnSpan="2" DataContext="{Binding c_TempWorkerCommands}">
       <Button Name="btnAdd" Content="TILFØJ" Margin="5,8" Padding="3" Command="{Binding CreateTempWorkerCommand}" />
       <Button Name="btnSearch" Content="SØG" Margin="5,8" Padding="3" Command="{Binding SearchTempWorkerCommand}" />
       <Button Name="btnUpdate" Content="OPDATER" Margin="5,8" Padding="3" Command="{Binding UpdateTempWorkerCommand}" />

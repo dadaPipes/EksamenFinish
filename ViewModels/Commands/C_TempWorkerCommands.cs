@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace EksamenFinish.ViewModels.Commands
 {
-    public class C_TempWorkerCommands : IViewModel
+    public class C_TempWorkerCommands
     {
         #region Fields
 
@@ -78,6 +78,8 @@ namespace EksamenFinish.ViewModels.Commands
         #endregion DeleteCommand
     }
 }
+
+// ICommand validation for SearchTempWorker: 
 
 //if (string.IsNullOrWhiteSpace(vm_tempWorkerViewModel.FirstName)
 //    || string.IsNullOrWhiteSpace(vm_tempWorkerViewModel.LastName)

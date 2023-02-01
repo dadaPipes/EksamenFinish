@@ -1,14 +1,18 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace EksamenFinish.ViewModels
 {
-    public class VM_TempWorkerValidation : IViewModel
+    public class VM_TempWorkerValidation : INotifyPropertyChanged
     {
         // //ViewModel for TempWorker validation
         // Responsible for validating the properties of a TempWorker,
-        // and returning an error message if the name is invalid. 
+        // and returning an error message if the name is invalid.
 
         #region Field
+
+        private VM_TempWorker vm_tempWorker;
 
         //The regular expression ^[a-zA-Z]*$ is used to match any string that consists only of letters (uppercase or lowercase).
         private readonly Regex _onlyLetters = new Regex("^[a-zA-Z]*$");
@@ -16,78 +20,92 @@ namespace EksamenFinish.ViewModels
         //Regular expression ^[0-9]*$ to match any string that consists only of digits.
         private readonly Regex _onlyDigits = new Regex("^[0-9]*$");
 
-        #endregion
 
-        #region Validate FirstName
 
-        public string ValidateFirstName(string firstName)
+        #endregion Field
+
+        public VM_TempWorkerValidation(VM_TempWorker vm_tempWorker)
         {
-            // assigns an empty string as default value if firstName is null or empty
-            firstName ??= ""; 
-            
-            if (firstName == "X Æ A-12")
+            this.vm_tempWorker = vm_tempWorker;
+        }
+
+        public string ValidateFirstName
+        {
+            get => vm_tempWorker.FirstName;
+            set
             {
-                return "I see you're trying to be unique, but X Æ A-12 is not your name.";
-            }
-            else if (!_onlyLetters.IsMatch(firstName))
-            {
-                return "Invalid first name";
-            }
-            else if (firstName.Length > 50)
-            {
-                return "First name must be 50 characters or less.";
-            }
-            else
-            {
-                return "";
+                // assigns an empty string as default value if firstName is null or empty
+                vm_tempWorker.FirstName ??= "";
+
+                if (vm_tempWorker.FirstName == "X Æ A-12")
+                {
+                    value = "I see you're trying to be unique, but X Æ A-12 is not your name.";
+                }
+                else if (!_onlyLetters.IsMatch(vm_tempWorker.FirstName))
+                {
+                    value = "Invalid first name";
+                }
+                else if (vm_tempWorker.FirstName.Length > 50)
+                {
+                    value = "First name must be 50 characters or less.";
+                }
+                else
+                {
+                    value = "";
+                }
+                vm_tempWorker.FirstName = value;
+                OnPropertyChanged(nameof(vm_tempWorker.FirstName));
             }
         }
 
-        #endregion ValidateFirstName
-
-        #region Validate LastName
-
-        public string ValidateLastName(string lastName)
+        public string ValidateLastName
         {
-            lastName ??= "";
+            get => vm_tempWorker.LastName;
+            set
+            {
+                vm_tempWorker.LastName ??= "";
 
-            if (!_onlyLetters.IsMatch(lastName))
-            {
-                return "Invalid Last name";
-            }
-            else if (lastName.Length > 50)
-            {
-                return "Last name must be 50 characters or less.";
-            }
-            else
-            {
-                return "";
+                if (!_onlyLetters.IsMatch(vm_tempWorker.LastName))
+                {
+                    value = "Invalid Last name";
+                }
+                else if (vm_tempWorker.LastName.Length > 50)
+                {
+                    value = "Last name must be 50 characters or less.";
+                }
+                else
+                {
+                    value = "";
+                }
+                vm_tempWorker.LastName = value;
+                OnPropertyChanged(nameof(vm_tempWorker.LastName));
             }
         }
 
-        #endregion ValidateLastName
-
-        #region Validate Address
-
-        public string ValidateAddress(string address)
+        public string ValidateAddress
         {
-            address ??= "";
+            get => vm_tempWorker.Address;
 
-            if (!_onlyLetters.IsMatch(address))
+            set
+
             {
-                return "Invalid address";
-            }
-            else if (address.Length > 5)
-            {
-                return "Address must be 5 characters or less.";
-            }
-            else
-            {
-                return "";
+                vm_tempWorker.Address ??= "";
+
+                if (!_onlyLetters.IsMatch(vm_tempWorker.Address))
+                {
+                    value = "Invalid address";
+                }
+                else if (vm_tempWorker.Address.Length > 5)
+                {
+                    value = "Address must be 5 characters or less.";
+                }
+                else
+                {
+                    value = "";
+                }
+                vm_tempWorker.Address = value;
             }
         }
-
-        #endregion ValidateAddress
 
         #region Validate City
 
@@ -109,7 +127,7 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion ValidateCity
+        #endregion Validate City
 
         #region Validate ZipCode
 
@@ -132,7 +150,7 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion ValidateZipCode
+        #endregion Validate ZipCode
 
         #region Validate PersonalNumber
 
@@ -155,6 +173,13 @@ namespace EksamenFinish.ViewModels
             }
         }
 
-        #endregion ValidatePersonalNumber
+        #endregion Validate PersonalNumber
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

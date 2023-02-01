@@ -1,4 +1,5 @@
-﻿using EksamenFinish.ViewModels.Commands;
+﻿using EksamenFinish.Models;
+using EksamenFinish.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,29 +8,26 @@ using System.Threading.Tasks;
 
 namespace EksamenFinish.ViewModels
 {
-    // Provides implementation of the methods to create instances of ViewModels, and a CommandClass related to TempWorker
-    // Returns new intances of the classes 
-    public class ViewModelFactory : ITempWorkerViewModelFactory
+    public class ViewModelFactory : IViewModelFactory
     {
-        public VM_TempWorker CreateTempWorkerViewModel()
+        private VM_TempWorker vm_TempWorker;
+        public VM_TempWorker CreateTempWorker()
         {
             return new VM_TempWorker();
         }
 
-        public VM_TempWorkerValidation CreateTempWorkerValidationViewModel()
+        public VM_TempWorkerValidation CreateTempWorkerValidation()
         {
-            return new VM_TempWorkerValidation();
+            return new VM_TempWorkerValidation(vm_TempWorker);
         }
 
-        public VM_TempWorkerCollection CreateTempWorkerCollectionViewModel()
+        public VM_TempWorkerCollection CreateTempWorkerCollection()
         {
             return new VM_TempWorkerCollection();
         }
-
-        public C_TempWorkerCommands CreateTempWorkerCommands(VM_TempWorker tempWorker)
-        {
-            return new C_TempWorkerCommands(tempWorker);
-        }
+        public C_TempWorkerCommands CreateTempWorkerCommands() => new C_TempWorkerCommands(vm_TempWorker);
+        
+        
     }
 
 }
